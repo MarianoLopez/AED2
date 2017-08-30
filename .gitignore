@@ -1,3 +1,5 @@
+#archivos binarios
+*.dat
 # Prerequisites
 *.d
 
