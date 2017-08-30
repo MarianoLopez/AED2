@@ -53,7 +53,7 @@ void ingresoDeDatos(int *nroCuenta, char *nombre, float *saldo){
 		printf("Ingresar Nombre: ");
 		/*[] = expresión regular (https://es.wikipedia.org/wiki/Expresi%C3%B3n_regular), ^ = representa el inicio de la cadena, \ = Se utiliza para escapar el siguiente carácter de la expresión de búsqueda */
 		scanf("%[^\n]s",nombre);/*[^\n] acepta cualquier String omitiendo \n, de esta forma "nombre" admite espacios en blanco "omitidos por defecto"*/
-		fflush(stdin);
+		
 		
 		printf("Ingrese saldo: "); 		
 		scanf("%f", saldo);
