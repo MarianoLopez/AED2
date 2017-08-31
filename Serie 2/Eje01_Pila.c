@@ -8,7 +8,7 @@
 #include <stdbool.h>/*cabecera boolean*/
 #define max 10 /*constante*/
 
-typedef float Pila [max];/*nuevo tipo de datos "Pila" a partir de array de float*/	
+typedef float Pila [max];/*nuevo tipo de dato "Pila" a partir de array de float*/	
 
 /*prototipos*/
 void crearPilaVacia();
@@ -24,7 +24,7 @@ void desapilarTodo();
 
 /*variables globales*/
 Pila pila;
-int i, tope;
+int tope;
 
 int main(){
 	/*variables locales*/
