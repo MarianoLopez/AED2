@@ -10,7 +10,7 @@
 #include <stdio.h>
 #include <stdbool.h>
 #include <string.h>
-#define max 4
+#define max 20
 
 typedef char String[50];/*nuevo tipo de dato "String" a partir de array de char 50*/
 typedef String Cola [max]; /*nuevo tipo de dato "Cola" a partir del tipo de dato String*/
