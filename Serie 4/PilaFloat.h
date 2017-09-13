@@ -25,7 +25,9 @@ void pop(Stack *s){
 		#ifdef DEBUG
 			if(!isEmpty(s)){printf("pop stack head direccion de memoria %x -> (elemento: %.2f, nodo siguiente: %x)\n",s->head,s->head->elemento,s->head->siguiente);}
 		#endif
+		struct *nodo = s->head;/*actual*/
 		s->head = s->head->siguiente;
+		free(nodo);/*liberar memoria*/
 		#ifdef DEBUG
 			if(!isEmpty(s)){printf("Stack head direccion de memoria %x -> (elemento: %.2f, nodo siguiente: %x)\n",s->head,s->head->elemento,s->head->siguiente);}
 		#endif
