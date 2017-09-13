@@ -1,69 +1,97 @@
 #include <stdbool.h>/*cabecera boolean*/
 #include <stdlib.h> /*gestión de memoria dinámica*/
 typedef float Elemento;
-typedef struct nodo{
+struct nodo{
 	Elemento elemento;		
     struct nodo *siguiente;    
-}Pila;
-
-Pila *pila;
+};
+typedef struct stack{struct nodo *head;}Stack;/*Pila/Stack/LIFO*/
 
 /*prototipos*/
-void crearPilaVacia();
-bool pilaVacia();
-void apilar(Elemento pElem);
-void desapilar();
-float cima();
-void visualizarElementos();
-void desapilarTodo();
-float sumaElementos();
+Stack* stack_new();/*retornar puntero Stack con *siguiente->NULL*/
+void push(Stack *s,Elemento elem);/*apilar Elemento en ptr stack*/
+void pop(Stack *s);/*desapilar Elemento en ptr stack*/
+bool isEmpty(Stack *s);/*stack/pila vacía?*/
+void stack_print(Stack *s);/*imprimir elementos*/
+Elemento top(Stack *s);/*retornar elemento de la cima*/
 
 
-/*implementaciones*/
-void crearPilaVacia(){ pila = NULL;}
-bool pilaVacia(){ return (pila==NULL);}
-void apilar(Elemento pElem){
-	Pila *aux = pila;
-	pila = malloc(sizeof(Pila));
-	pila->elemento = pElem;		
-	pila->siguiente = aux;
-	printf("Elemento insertado!\n");
+Elemento top(Stack *s){
+	return s->head->elemento;
 }
-void desapilar(){
-	printf("\tDesapilando %.2f\n",cima());
-	Pila *aux = pila;/*auxilar a la dirección actual para no perderla*/
-	pila = pila->siguiente;/*posicionar el siguiente elmento en la posición actual*/
-	free(aux); /*liberar memoria*/
-}
-float cima(){ return pila->elemento;}/*retornar elemento del tope de la pila*/
-void visualizarElementos(){
-	Pila *aux =  pila;/*auxiliar para no manipular el contenido original de la pila*/
-	if (!pilaVacia()){
-		printf("Elementos en pila: ");
-		while(aux != NULL){
-			printf("%.2f ", aux->elemento);
-	    	aux = aux->siguiente;
-		}
+void pop(Stack *s){
+	if(!isEmpty(s)){
+		printf("pop (%.2f)!\n",s->head->elemento);
+		#ifdef DEBUG
+			if(!isEmpty(s)){printf("pop stack head direccion de memoria %x -> (elemento: %.2f, nodo siguiente: %x)\n",s->head,s->head->elemento,s->head->siguiente);}
+		#endif
+		s->head = s->head->siguiente;
+		#ifdef DEBUG
+			if(!isEmpty(s)){printf("Stack head direccion de memoria %x -> (elemento: %.2f, nodo siguiente: %x)\n",s->head,s->head->elemento,s->head->siguiente);}
+		#endif
 	}else{
-		printf("Pila vacia\n");
+		printf("Empty stack\n");
 	}
 	printf("\n\n");
 }
-void desapilarTodo(){
-	while(!pilaVacia()){
-		desapilar();
+
+bool isEmpty(Stack *s){
+	return (s==NULL||s->head==NULL);
+}
+void stack_print(Stack *s){
+	printf("Stack print\n");
+	struct nodo *n = NULL;
+	if(!isEmpty(s)){
+		#ifdef DEBUG
+			printf("Stack head direccion de memoria %x -> (elemento: %.2f, nodo siguiente: %x)\n",s->head,s->head->elemento,s->head->siguiente);
+		#endif	
+		for(n=s->head;n!=NULL;n=n->siguiente){
+			#ifdef DEBUG
+				printf("\tNodo auxiliar direccion de memoria: %x -> (elemento: %.2f, nodo siguiente: %x)\n",n,n->elemento,n->siguiente);		
+			#else
+				printf("%.2f\t",n->elemento);
+			#endif
+		}
+		#ifdef DEBUG
+			printf("Stack head direccion de memoria %x -> (elemento: %.2f, nodo siguiente: %x)\n",s->head,s->head->elemento,s->head->siguiente);
+		#endif
+		printf("\n\n");
 	}
 }
-float sumaElementos(){
-	float suma = 0;	
-	Pila *aux =  pila;/*auxiliar para no manipular el contenido original de la pila*/
-	if (!pilaVacia()){
-		while(aux != NULL){
-			suma+=aux->elemento;
-	    	aux = aux->siguiente;
-		}
+
+
+void push(Stack *s,Elemento elem){
+	printf("push (%.2f)!\n",elem);
+	struct nodo* n = malloc(sizeof *n);
+	n->elemento = elem;
+	n->siguiente = NULL;
+	#ifdef DEBUG
+		printf("Nuevo nodo direccion de memoria: %x -> (elemento: %.2f, nodo siguiente: %x)\n",n,n->elemento,n->siguiente);
+	#endif
+	if(isEmpty(s)){
+		s->head = n;
+		#ifdef DEBUG
+			printf("Primer elemento\n");
+			printf("Stack head direccion de memoria %x -> (elemento: %.2f, nodo siguiente: %x)\n",s->head,s->head->elemento,s->head->siguiente);
+		#endif
 	}else{
-		printf("Pila vacia\n");
+		n->siguiente = s->head;
+		#ifdef DEBUG
+			printf("Stack head direccion de memoria %x -> (elemento: %.2f, nodo siguiente: %x)\n",s->head,s->head->elemento,s->head->siguiente);
+			printf("Nuevo nodo->siguiente = Stack->head\n");
+			printf("Nuevo nodo direccion de memoria: %x -> (elemento: %.2f, nodo siguiente: %x)\n",n,n->elemento,n->siguiente);
+		#endif
+		s->head = n;
+		#ifdef DEBUG
+			printf("Stack->head = nuevo nodo\n");
+			printf("Stack head direccion de memoria %x -> (elemento: %.2f, nodo siguiente: %x)\n",s->head,s->head->elemento,s->head->siguiente);
+		#endif
+		printf("\n\n");
 	}
-	return suma;
+}
+
+Stack* stack_new(){
+	Stack* s = malloc(sizeof *s);
+	s->head = NULL;
+  	return s;
 }
